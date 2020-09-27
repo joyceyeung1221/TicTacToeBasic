@@ -7,68 +7,64 @@ namespace TicTacToeTDD
     {
         private IIO _io;
         private Board _board;
-        private bool _isValid;
+        public bool EndGame = false;
         public PlayerTurn(IIO io, Board board)
         {
             _io = io;
             _board = board;
         }
 
-        public Marker[,] Complete(Marker marker, GameBoard gameBoard)
+        public Marker[,] Resolve(Marker marker, GameBoard gameBoard)
         {
             var playerMove = GetPlayerMove(marker, gameBoard);
-            gameBoard.PlaceMarker(marker, playerMove);
+            if (!EndGame)
+            {
+                gameBoard.PlaceMarker(marker, playerMove);
+            }
             return gameBoard.Board;
         }
 
         private int[] GetPlayerMove(Marker marker, GameBoard gameBoard)
         {
-            int[] playerCoordinate;
+            int[] playerCoordinate = new int[2];
+            bool _isValid = false;
             do
             {
-                SetDefaultValidIndicator();
-                playerCoordinate = GetBoardCoordinateFromUser(marker);
+                string playerInput = GetPlayerInput(marker);
+                if (playerInput == "q")
+                {
+                    EndGame = true;
+                    return new int[] { -1, -1 };
+
+                }
+                var coordinate = ConvertToCoordinate(playerInput);
+
+                if(!IsACoordinate(coordinate) && !_board.IsValidLocation(coordinate.ToArray()))
+                {
+                    _io.Output($"{playerInput} is not in correct format = int, int or within range");
+                    continue;
+                }
+
+                playerCoordinate = coordinate.ToArray();
+
                 if (!gameBoard.IsPlaceTaken(playerCoordinate))
                 {
                     _isValid = true;
+                    continue;
                 }
-                else
-                {
-                    _io.Output("Oh no, a piece is already at this place! Try again...");
-                }
-            } while (_isValid==false);
+
+                _io.Output("Oh no, a piece is already at this place! Try again...");
+
+            } while (!_isValid);
+
             return playerCoordinate;
         }
 
-        private int[] GetBoardCoordinateFromUser(Marker marker)
+        private string GetPlayerInput(Marker marker)
         {
-            int[] playerCoordinate;
-            do
-            {
-                playerCoordinate = RecordPlayerCoordinate(marker);
-            } while (!_board.IsValidLocation(playerCoordinate));
-            return playerCoordinate;
-        }
+            _io.Output($"{marker.Role} enter a coord x,y to place your X or enter 'q' to give up: ");
+            return _io.RecordInput();
 
-        private int[] RecordPlayerCoordinate(Marker marker)
-        {
-            List<int> coordinate;
-            do
-            {
-                SetDefaultValidIndicator();
-                _io.Output($"{marker.Role} enter a coord x,y to place your X or enter 'q' to give up: ");
-                string userInput = _io.RecordInput();
-                coordinate = ConvertToCoordinate(userInput);
-                if (IsACoordinate(coordinate) && _board.IsValidLocation(coordinate.ToArray()))
-                {
-                    _isValid = true;
-                }
-                else
-                {
-                    _io.Output($"{userInput} is not in correct format = int, int");
-                }
-            } while (_isValid == false);
-            return coordinate.ToArray();
         }
 
         private bool IsACoordinate(List<int> coordinate)
@@ -92,11 +88,6 @@ namespace TicTacToeTDD
                 }
             }
             return coordinate;
-        }
-
-        private void SetDefaultValidIndicator()
-        {
-            _isValid = false;
         }
     }
 }

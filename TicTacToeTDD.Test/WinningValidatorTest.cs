@@ -2,9 +2,9 @@
 using Xunit;
 namespace TicTacToeTDD.Test
 {
-    public class WinningConditionTest
+    public class WinningValidatorTest
     {
-        public WinningConditionTest()
+        public WinningValidatorTest()
         {
         }
 
@@ -16,7 +16,7 @@ namespace TicTacToeTDD.Test
         {
 
             var stubGameBoard = new Marker[,]{ {null,null,null },{null,null,null },{null,null,null } };
-            var result = WinningCondition.IsMet(stubGameBoard);
+            var result = WinningValidator.HasWinner(stubGameBoard);
             var expected = false;
 
             Assert.Equal(expected, result);
@@ -26,7 +26,7 @@ namespace TicTacToeTDD.Test
         public void ShouldReturnFalseWhenRowIsHalfOccupied()
         {
             var stubGameBoard = new Marker[,] { { null, player, player }, { null, null, null }, { player, null, null } };
-            var result = WinningCondition.IsMet(stubGameBoard);
+            var result = WinningValidator.HasWinner(stubGameBoard);
             var expected = false;
 
             Assert.Equal(expected, result);
@@ -37,7 +37,7 @@ namespace TicTacToeTDD.Test
         {
             
             var stubGameBoard = new Marker[,]{ {player,player,player },{null,null,null },{null,null,null } };
-            var result = WinningCondition.IsMet(stubGameBoard);
+            var result = WinningValidator.HasWinner(stubGameBoard);
             var expected = true;
 
             Assert.Equal(expected, result);
@@ -48,7 +48,7 @@ namespace TicTacToeTDD.Test
         {
 
             var stubGameBoard = new Marker[,] { { null, null, null }, { player, player, player }, { null, null, null } };
-            var result = WinningCondition.IsMet(stubGameBoard);
+            var result = WinningValidator.HasWinner(stubGameBoard);
             var expected = true;
 
             Assert.Equal(expected, result);
@@ -59,7 +59,7 @@ namespace TicTacToeTDD.Test
         {
 
             var stubGameBoard = new Marker[,] { { null, null, null }, { null, null, null }, { player, player, player } };
-            var result = WinningCondition.IsMet(stubGameBoard);
+            var result = WinningValidator.HasWinner(stubGameBoard);
             var expected = true;
 
             Assert.Equal(expected, result);
@@ -70,7 +70,7 @@ namespace TicTacToeTDD.Test
         {
 
             var stubGameBoard = new Marker[,] { { player, null, null }, { player, null, null }, { player, null, null } };
-            var result = WinningCondition.IsMet(stubGameBoard);
+            var result = WinningValidator.HasWinner(stubGameBoard);
             var expected = true;
 
             Assert.Equal(expected, result);
@@ -81,7 +81,7 @@ namespace TicTacToeTDD.Test
         {
 
             var stubGameBoard = new Marker[,] { { null, player, null }, { null, player, null }, { null, player, null } };
-            var result = WinningCondition.IsMet(stubGameBoard);
+            var result = WinningValidator.HasWinner(stubGameBoard);
             var expected = true;
 
             Assert.Equal(expected, result);
@@ -92,7 +92,7 @@ namespace TicTacToeTDD.Test
         {
 
             var stubGameBoard = new Marker[,] { { null, null, player }, { null, null, player }, { null, null, player } };
-            var result = WinningCondition.IsMet(stubGameBoard);
+            var result = WinningValidator.HasWinner(stubGameBoard);
             var expected = true;
 
             Assert.Equal(expected, result);
@@ -103,7 +103,7 @@ namespace TicTacToeTDD.Test
         {
 
             var stubGameBoard = new Marker[,] { { player, null, null }, { null, player, null }, { null, null, player } };
-            var result = WinningCondition.IsMet(stubGameBoard);
+            var result = WinningValidator.HasWinner(stubGameBoard);
             var expected = true;
 
             Assert.Equal(expected, result);
@@ -114,7 +114,28 @@ namespace TicTacToeTDD.Test
         {
 
             var stubGameBoard = new Marker[,] { { null, null, player }, { null, player, null }, { player, null, null } };
-            var result = WinningCondition.IsMet(stubGameBoard);
+            var result = WinningValidator.HasWinner(stubGameBoard);
+            var expected = true;
+
+            Assert.Equal(expected, result);
+        }
+
+
+        [Fact]
+        public void ShouldReturnFalse_WhenGameBoardIsNotFull()
+        {
+            var stubGameBoard = new Marker[,] { { null, null, player }, { null, player, null }, { player, null, null } };
+            var result = WinningValidator.IsADraw(stubGameBoard);
+            var expected = false;
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void ShouldReturnTrueWhenGameBoardIsFull()
+        {
+            var stubGameBoard = new Marker[,] { { player, player, player }, { player, player, player }, { player, player, player } };
+            var result = WinningValidator.IsADraw(stubGameBoard);
             var expected = true;
 
             Assert.Equal(expected, result);

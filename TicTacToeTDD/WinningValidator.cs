@@ -4,12 +4,19 @@ using System.Linq;
 
 namespace TicTacToeTDD
 {
-    public class WinningCondition
+    public class WinningValidator
     {
 
-        public static bool IsMet(Marker[,] board)
+        public static bool HasWinner(Marker[,] board)
         {
             return IsAnyRowOccupiedByOnePlayer(board) || IsAnyColumnOccupiedByOnePlayer(board) || IsAnyDiagonalLineOccupidedByOnePlayer(board);
+        }
+
+
+        public static bool IsADraw(Marker[,] board)
+        {
+            return !board.Cast<Marker>().Contains(null);
+
         }
 
         static bool IsAnyRowOccupiedByOnePlayer(Marker[,] board)

@@ -6,7 +6,11 @@ namespace TicTacToeTDD
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Board board = new Board(3, 3);
+            IIO io = new InputOutput();
+            GameMaster gameMaster = new GameMaster(io);
+            gameMaster.SetupGame(board);
+            gameMaster.Run();
         }
     }
 }

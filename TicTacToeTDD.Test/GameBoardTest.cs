@@ -11,7 +11,7 @@ namespace TicTacToeTDD.Test
         int col = 3;
 
         [Fact]
-        public void ShouldReturnTrueWhenPlaceIsNotTaken()
+        public void ShouldReturnFalseWhenPlaceIsNotTaken()
         {
             var coordinate = new int[] { row, col };
             GameBoard gameBoard = new GameBoard(row, col);
@@ -23,43 +23,13 @@ namespace TicTacToeTDD.Test
         [Theory]
         [InlineData(1, 1, true)]
         [InlineData(3, 1, true)]
-        public void ShouldReturnFalseWhenAMarkerIsPlaced(int row, int col, bool expected)
+        public void ShouldReturnTrueWhenAMarkerIsPlaced(int row, int col, bool expected)
         {
             var coordinate = new int[] { row, col };
             GameBoard gameBoard = new GameBoard(row, col);
             gameBoard.PlaceMarker(marker1, coordinate);
 
             var result = gameBoard.IsPlaceTaken(coordinate);
-            Assert.Equal(expected, result);
-        }
-
-        [Fact]
-        public void ShouldReturnFalseWhenGameBoardIsNotFull()
-        {
-            GameBoard gameBoard = new GameBoard(row, col);
-
-            var result = gameBoard.IsFull();
-            var expected = false;
-
-            Assert.Equal(expected, result);
-        }
-
-        [Fact]
-        public void ShouldReturnTrueWhenGameBoardIsFull()
-        {
-            GameBoard gameBoard = new GameBoard(row, col);
-            for (int i = 1; i <= row; i++)
-            {
-                for (int j = 1; j <= col; j++)
-                {
-                    var coordinate = new int[] { i, j };
-                    gameBoard.PlaceMarker(marker1, coordinate);
-                }
-            }
-
-            var result = gameBoard.IsFull();
-            var expected = true;
-
             Assert.Equal(expected, result);
         }
 

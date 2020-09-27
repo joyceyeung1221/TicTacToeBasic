@@ -17,7 +17,7 @@ namespace TicTacToeTDD.Test
             var mockio = new Mock<IIO>();
             mockio.Setup(x => x.RecordInput()).Returns("1,1");
             var playerTurn = new PlayerTurn(mockio.Object, new Board(3, 3));
-            var actual = playerTurn.Complete(player, gameBoard);
+            var actual = playerTurn.Resolve(player, gameBoard);
             var expected = new Marker[,] { { player, null, null }, { null, null, null }, { null, null, null } };
 
             Assert.Equal(expected, actual);

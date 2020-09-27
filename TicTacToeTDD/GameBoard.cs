@@ -19,11 +19,6 @@ namespace TicTacToeTDD
             Board[coordinate[0] - 1, coordinate[1] - 1] = marker;
         }
 
-        public bool IsFull()
-        {
-            return !Board.Cast<Marker>().Contains(null);
-
-        }
 
         public bool IsPlaceTaken(int[] coordinate)
         {
